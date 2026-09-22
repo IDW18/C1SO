@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Settings Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  body{ padding:24px; max-width:900px; margin:0 auto; }
+  .settings-tabs{ display:flex; gap:6px; flex-wrap:wrap; border-bottom:1px solid var(--border); margin-bottom:20px; padding-bottom:0; }
+  .settings-tab-btn{
+    background:none; border:1px solid transparent; border-bottom:none;
+    color:var(--text-faint); font-size:13.5px; font-weight:600;
+    padding:10px 16px; border-radius:8px 8px 0 0; cursor:pointer;
+    margin-bottom:-1px; font-family:var(--font-ui);
+  }
+  .settings-tab-btn:hover{ color:var(--text); }
+  .settings-tab-btn.active{
+    color:var(--accent-bright); border-color:var(--border); background:var(--panel);
+    border-bottom:1px solid var(--panel);
+  }
+  .settings-tab-panel{ display:none; }
+  .settings-tab-panel.active{ display:block; }
+  .field-hint{ color:var(--text-dim); font-size:12.5px; }
+  .idt-title{ font-size:16px; font-weight:600; }
+</style>
+</head>
+<body>
+
+<h1 style="font-size:20px; margin-bottom:4px;">Settings</h1>
+<p style="font-family:monospace; font-size:11px; color:#7EA3C4; margin-bottom:16px;">build: settings-tabs-v4</p>
+
+<div class="settings-tabs">
+  <button type="button" class="settings-tab-btn active" data-tab="itemTypes" onclick="showSettingsTab('itemTypes')">Item Types</button>
+  <button type="button" class="settings-tab-btn" data-tab="departments" onclick="showSettingsTab('departments')">Departments</button>
+  <button type="button" class="settings-tab-btn" data-tab="categories" onclick="showSettingsTab('categories')">Work Log Categories</button>
+</div>
+
+<div id="settingsTab-itemTypes" class="settings-tab-panel active">
+  <div class="panel">
+    <div class="panel-header"><h2>Inventory Item Types (Kinds of Item)</h2></div>
+    <div class="panel-body">
+      <p class="field-hint" style="margin-bottom:12px;">Add or remove the kinds of item used across Inventory (e.g. Projector, PC Parts, Laptop, Monitor).</p>
+      <button type="button" class="btn-primary" onclick="openModal('itemTypes')">+ Add Item Type</button>
+      <table class="data-table" style="margin-top:16px;">
+        <thead><tr><th>Name</th><th># Items</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Projector</td><td>4</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+          <tr><td>Laptop</td><td>12</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+          <tr><td>Monitor</td><td>7</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="settingsTab-departments" class="settings-tab-panel">
+  <div class="panel">
+    <div class="panel-header"><h2>Departments</h2></div>
+    <div class="panel-body">
+      <p class="field-hint" style="margin-bottom:12px;">Add or remove departments that items can be deployed to.</p>
+      <button type="button" class="btn-primary" onclick="openModal('departments')">+ Add Department</button>
+      <table class="data-table" style="margin-top:16px;">
+        <thead><tr><th>Name</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Registrar's Office</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+          <tr><td>MIS Department</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><h2>Faculty / Staff (per Department)</h2></div>
+    <div class="panel-body">
+      <p class="field-hint" style="margin-bottom:12px;">These are the names that show up when deploying an item to a department.</p>
+      <button type="button" class="btn-primary" onclick="openModal('deptPeople')">+ Add Faculty/Staff</button>
+      <table class="data-table" style="margin-top:16px;">
+        <thead><tr><th>Name</th><th>Department</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Juan Dela Cruz</td><td>MIS Department</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="settingsTab-categories" class="settings-tab-panel">
+  <div class="panel">
+    <div class="panel-header"><h2>Work Log Categories</h2></div>
+    <div class="panel-body">
+      <p class="field-hint" style="margin-bottom:12px;">Manage/delete categories here.</p>
+      <button type="button" class="btn-primary" onclick="openModal('categories')">+ Add Category</button>
+      <table class="data-table" style="margin-top:16px;">
+        <thead><tr><th>Name</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Maintenance</td><td><button class="btn-danger btn-sm">Delete</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showSettingsTab(tab){
+    document.querySelectorAll('.settings-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.settings-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('settingsTab-' + tab).classList.add('active');
+    document.querySelector('.settings-tab-btn[data-tab="' + tab + '"]').classList.add('active');
+  }
+</script>
+
+<div id="modalBackdrop" class="login-modal-backdrop item-details-backdrop" onclick="closeModal()">
+  <div class="login-modal-card item-details-card" onclick="event.stopPropagation();" style="max-width:440px;">
+    <button type="button" class="login-modal-close" onclick="closeModal()">&times;</button>
+
+    <div id="modal-itemTypes" class="modal-pane">
+      <h3 class="idt-title" style="margin-bottom:18px;">Add Item Type</h3>
+      <form onsubmit="event.preventDefault(); closeModal();">
+        <div class="field">
+          <label>Item Type Name</label>
+          <input type="text" placeholder="e.g. Projector, PC Parts, Laptop, Monitor" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Add Type</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="modal-departments" class="modal-pane" style="display:none;">
+      <h3 class="idt-title" style="margin-bottom:18px;">Add Department</h3>
+      <form onsubmit="event.preventDefault(); closeModal();">
+        <div class="field">
+          <label>Department Name</label>
+          <input type="text" placeholder="e.g. Registrar's Office, MIS Department" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Add Department</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="modal-deptPeople" class="modal-pane" style="display:none;">
+      <h3 class="idt-title" style="margin-bottom:18px;">Add Faculty/Staff</h3>
+      <form onsubmit="event.preventDefault(); closeModal();">
+        <div class="field">
+          <label>Department</label>
+          <select required>
+            <option value="">Select department…</option>
+            <option>Registrar's Office</option>
+            <option>MIS Department</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Faculty/Staff Name</label>
+          <input type="text" placeholder="e.g. Juan Dela Cruz" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Add Name</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="modal-categories" class="modal-pane" style="display:none;">
+      <h3 class="idt-title" style="margin-bottom:18px;">Add Work Log Category</h3>
+      <form onsubmit="event.preventDefault(); closeModal();">
+        <div class="field">
+          <label>Category Name</label>
+          <input type="text" placeholder="e.g. Maintenance, Troubleshooting" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Add Category</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function openModal(which){
+    document.querySelectorAll('.modal-pane').forEach(function(p){ p.style.display = 'none'; });
+    document.getElementById('modal-' + which).style.display = 'block';
+    var backdrop = document.getElementById('modalBackdrop');
+    backdrop.classList.add('open');
+    requestAnimationFrame(function(){ backdrop.classList.add('show'); });
+  }
+  function closeModal(){
+    var backdrop = document.getElementById('modalBackdrop');
+    backdrop.classList.remove('show');
+    setTimeout(function(){ backdrop.classList.remove('open'); }, 180);
+  }
+</script>
+
+</body>
+</html>
