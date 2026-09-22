@@ -1,16 +1,4 @@
--- =========================================================
---  C1SO TECH — Work Log & Inventory System
---  Database Schema for XAMPP / phpMyAdmin (MySQL / MariaDB)
---  (Database name is c1so_tech, matching the on-screen branding)
--- =========================================================
---  HOW TO INSTALL:
---  1. Start Apache + MySQL in XAMPP Control Panel
---  2. Open http://localhost/phpmyadmin
---  3. Click "New" (left sidebar) -> Database name: c1so_tech -> Create
---     (OR just import this whole file directly; it creates the DB itself)
---  4. Click the "Import" tab -> Choose this file (database.sql) -> Go
---  5. Done. Default admin login is created for you (see bottom of file).
--- =========================================================
+
 
 CREATE DATABASE IF NOT EXISTS c1so_tech
   CHARACTER SET utf8mb4
